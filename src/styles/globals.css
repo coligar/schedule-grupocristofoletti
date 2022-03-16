@@ -1,0 +1,68 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.css-tlc64q-MuiPaper-root-MuiDialog-paper 
+{
+  background-color: rgba(255,255,255, 0.85);
+  backdrop-filter: blur(2px);
+}
+
+.css-153eyq5-MuiModal-root-MuiDialog-root 
+{
+  backdrop-filter: blur(3px);
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #8a8a8a;
+  border: 0px solid #ffffff;
+  border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #707070;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #474747;
+}
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+  border: 0px none #ffffff;
+  border-radius: 9px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #e0e0e0;
+}
+::-webkit-scrollbar-track:active {
+  background: #c4c4c4;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+scrollbar {
+  width: 5px;
+  height: 5px;
+}
