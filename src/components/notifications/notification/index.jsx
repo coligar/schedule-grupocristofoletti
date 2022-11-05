@@ -1,7 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import BadgeUnstyled from '@material-ui/unstyled/BadgeUnstyled';
 
 
 const Notifications = (props) => {

@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Schedule {
+  id          String   @id @unique @default(cuid())
+  order       Int
+  name        String
+  interviewer String
+  day         DateTime
+  starttime   String
+  endtime     String
+  area        String
+  type        String
+  avatar      String
+}

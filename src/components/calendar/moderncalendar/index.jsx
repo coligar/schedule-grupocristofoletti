@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import style from './Moderncalendar.module.css'
 import SearchBar from '../../forms/inputs/search/search'
 import Paper from '@mui/material/Paper'
@@ -13,11 +13,104 @@ import CalendarIcon from '@mui/icons-material/Today'
 
 const ModernCalendar = (props) => 
 {
+    const [searchTerm, setSearchTerm] = useState({type:'', term:''})
+    const [scheduleList, setScheduleList] = useState([])
+    
     var current = new Date()
 
-    let last_day = new Date(current.getTime() - 86400000).toLocaleDateString()
+    /*let last_day = new Date(current.getTime() - 86400000).toLocaleDateString()
     let current_day = new Date().toLocaleDateString()
-    let next_day = new Date(current.getTime() + 86400000).toLocaleDateString()
+    let next_day = new Date(current.getTime() + 86400000).toLocaleDateString()*/
+
+    let last_day = new Date('2022/01/01').toLocaleDateString()
+    let current_day = new Date('2022/01/02').toLocaleDateString()
+    let next_day = new Date('2022/01/03').toLocaleDateString()
+
+    console.log('dias oroginal :',last_day, current_day, next_day)
+
+    const getData = useCallback(async () =>
+    {
+        try 
+        {
+          let res = fetch('http://localhost:3000/api/schedule/get')
+          .then((response) => {
+            return response.json()
+          }) 
+          .then((json) => {
+            console.log(json)
+            const yesterday = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === last_day)
+            const current = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === current_day)
+            const tomorrow = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === next_day)
+            console.log('dias retorno :',yesterday, current, tomorrow)
+            const schedule =[
+                {
+                    date_id: 1,
+                    date: last_day,
+                    data: yesterday,
+                },
+                {
+                    date_id: 2,
+                    date: current_day,
+                    data: current,
+                },
+                {
+                    date_id: 3,
+                    date: next_day,
+                    data: tomorrow,
+                },
+            ]
+            setScheduleList(schedule)
+
+          });
+        } 
+        catch (error) 
+        {
+            console.log(error)
+        }
+    },[])
+
+
+    const doSchedule = useCallback(async () =>
+    {
+        try 
+        {
+            const response = await fetch('http://localhost:3000/api/schedule/create',
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    order: '5',
+                    name: 'Marcelo Bombonato',
+                    interviewer: 'Representante | Elisângela',
+                    day: new Date(current.getTime()),
+                    starttime: '14:00',
+                    endtime: '15:00',
+                    area: 'representante',
+                    type: '',
+                    avatar: 'https://www.thewrap.com/wp-content/uploads/2016/05/Top-Gun-Tom-Cruise.png'
+                }),
+                headers:
+                {
+                    'Content-Type': 'application/json; charset=UTF-8'
+                }
+            })
+            console.log('passou aqui', response)
+            if(!response.ok)
+            {
+                throw new Error(response.statusText)
+            }
+        } 
+        catch (error) 
+        {
+            console.log(error)
+        }
+    },[current_day])
+
+
+    useEffect(() => 
+    {
+        //doSchedule()
+        getData()
+    },[doSchedule, getData])
 
     /**Array com o resultado da consulta ao banco de dados para agenda
      * Todas as formas de pesquisa (dia, semana, mês e intervalo de datas)
@@ -28,80 +121,7 @@ const ModernCalendar = (props) =>
         {
             date_id: 1,
             date: last_day,
-            data:[ 
-                {
-                    id: '1',
-                    order: '1',
-                    name: 'Alexandre Henrique',
-                    interviewer: 'TI | Diego Camargo',
-                    day: last_day,
-                    starttime: '08:00',
-                    endtime: '09:00',
-                    area: 'rh',
-                    type: 'agendamentosolicitado',
-                    avatar: 'https://observatoriodocinema.uol.com.br/wp-content/uploads/2018/08/cropped-exterminador-do-futuro-6-arnold-schwarzenegger-prepara-novo-ator-3.jpg'
-                },
-                {
-                    id: '2',
-                    order: '2',
-                    name: 'José Maria',
-                    interviewer: 'Administrativo | Elisângela',
-                    day: last_day,
-                    starttime: '09:30',
-                    endtime: '10:30',
-                    area: 'administrativo',
-                    type: 'reagendamentosolicitado',
-                    avatar: 'https://spinoff.com.br/wp-content/uploads/o-exterminador-do-futuro-1.jpg'
-                }, 
-                {
-                    id: '3',
-                    order: '3',
-                    name: 'Andréia Marques',
-                    interviewer: 'Comercial | Elisângela',
-                    day: last_day,
-                    starttime: '11:00',
-                    endtime: '12:30',
-                    area: 'comercial',
-                    type: '',
-                    avatar: 'https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_750,h_375/https://poltronanerd.com.br/wp-content/uploads/2020/05/jake-neyriti-james-cameron-avatar-2-capa-minhaseriefavorita-1280x720-1-750x375.jpg'
-                },
-                {
-                    id: '4',
-                    order: '4',
-                    name: 'Marcelo Bombonato',
-                    interviewer: 'Representante | Elisângela',
-                    day: last_day,
-                    starttime: '13:00',
-                    endtime: '15:00',
-                    area: 'representante',
-                    type: '',
-                    avatar: 'https://www.thewrap.com/wp-content/uploads/2016/05/Top-Gun-Tom-Cruise.png'
-                },
-                {
-                    id: '5',
-                    order: '5',
-                    name: 'Zélia Cardoso',
-                    interviewer: 'Produção | Elisângela',
-                    day: last_day,
-                    starttime: '15:15',
-                    endtime: '16:30',
-                    area: 'produção',
-                    type: '',
-                    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZOg5mRt2Y77bTrMb6iyUhBbXY5ErS_QOL5Q&usqp=CAU'
-                },
-                {
-                    id: '6',
-                    order: '6',
-                    name: 'Luis Skagion',
-                    interviewer: 'Comercial | Elisângela',
-                    day: last_day,
-                    starttime: '17:00',
-                    endtime: '18:30',
-                    area: 'comercial',
-                    type: '',
-                    avatar: 'https://tm.ibxk.com.br/2014/06/24/24104456847152.jpg?ims=1120x420'
-                }
-            ],
+            data: [],
         },
         {
             date_id: 2,
@@ -386,9 +406,8 @@ const ModernCalendar = (props) =>
      
     ]
     
-    const [searchTerm, setSearchTerm] = useState({type:'', term:''})
 
-    const schedule_list = schedule.map((data, index) => 
+    const schedule_list = scheduleList.map((data, index) => 
     (                           
         <>
             <div key={Math.random()} className={style.schedule_area_candidate_content_line_header}>
@@ -407,31 +426,34 @@ const ModernCalendar = (props) =>
                 
             </div>
 
-            {data.data.filter((val, index) => {
-
-                if(searchTerm.type == '')
+            
                 {
-                    return val
-                }               
-                else if(searchTerm.type === 'search') 
-                {
-                    return val.name.toLocaleLowerCase().includes(searchTerm.term.toLocaleLowerCase())
-                }
 
-            }).map((item, index) => (
+                    data.data.filter((val, index) => {
 
-                <div key={item.id} className={style.schedule_area_candidate_content_line}>
+                    if(searchTerm.type == '')
+                    {
+                        return val
+                    }               
+                    else if(searchTerm.type === 'search') 
+                    {
+                        return val.name.toLocaleLowerCase().includes(searchTerm.term.toLocaleLowerCase())
+                    }
 
-                    <div className={style.column_a}>
+                }).map((item, index) => (
 
-                        {item.order}º
+                    <div key={item.id} className={style.schedule_area_candidate_content_line}>
+
+                        <div className={style.column_a}>
+
+                            {item.order}º
+
+                        </div>
+
+                        <Pin name={item.name} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area} type={item.type} avatar={item.avatar} day={data.date}/>
 
                     </div>
-
-                    <Pin name={item.name} interviewer={item.interviewer} starttime={item.starttime} endtime={item.endtime} area={item.area} type={item.type} avatar={item.avatar} day={data.date}/>
-
-                </div>
-            ))}
+                ))}   
 
         </>
     ))

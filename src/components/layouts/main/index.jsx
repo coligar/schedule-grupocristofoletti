@@ -21,7 +21,7 @@ const LayoutMain = (props) =>
                     <div className={style.content_nav_left}>
                         <div className={`${style.item} ${style.logomobile}`}>
                             <Link href="/" passHref>
-                                <a><Logo height="39" width="113" image="/images/system/logo-grupo-40.svg"/></a>
+                                <Logo height="39" width="113" image="/images/system/logo-grupo-40.svg"/>
                             </Link>
                         </div>
                         <div className={style.item}>
@@ -32,7 +32,7 @@ const LayoutMain = (props) =>
 
                 <div className={style.logo}>
                     <Link href="/" passHref>
-                        <a><Logo height="39" width="113" image="/images/system/logo-grupo.svg"/></a>
+                        <Logo height="39" width="113" image="/images/system/logo-grupo.svg"/>
                     </Link>
                 </div>
 

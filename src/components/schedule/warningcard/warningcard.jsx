@@ -29,8 +29,6 @@ const WarningCard = (props) =>
     const [content, setContent] = useState()
     const [popuptitle, setPopupTitle] = useState()
     
-    console.log(props.data)
-
     const doAnything = (cod) => 
     {
         setConfirmDialog({

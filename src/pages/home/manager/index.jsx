@@ -377,7 +377,7 @@ const Manager = (props) =>
             id: 1,
             date: '09/09/2021 10:45',
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia, felis vel pretium porta, purus massa convallis leo, quis molestie sem turpis convallis massa.',
-            name: 'Valquíria Barbiere',
+            name: 'Valquíria Barbiere Barbosa',
             img: 'https://static.remove.bg/remove-bg-web/99ab439c6e8e26adfd8c59cee4eb26f0376a9584/assets/start_remove-c851bdf8d3127a24e2d137a55b1b427378cd17385b01aec6e59d5d4b5f39d2ec.png',
             type: 'cancelamento',
             tel: '1935344470',
