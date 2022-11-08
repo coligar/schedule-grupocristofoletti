@@ -30,10 +30,26 @@ const ModernCalendar = (props) =>
 
     const getScheduleInterval = (days = 0, startDate = '') =>
     {
+
+        let data = getInterviewPeriod(days, startDate)
+
+        let filtered_schedule = [
+            {
+                date_id: 1,
+                date: `${new Date(data.current_day).toLocaleDateString()} até o dia ${data.period.toLocaleDateString()}`,
+                data: data.filtered_data,
+            }
+        ]
+
+        setScheduleList(filtered_schedule);
+    }
+
+    const getInterviewPeriod = (days, startDate = '') =>
+    {
         let period = addSubDays(days)
         let title = ''
 
-        let date = new Date()
+        let date = new Date('2022/01/01') //só retirar o período 
         let current_day = date.setDate(date.getDate());
 
         if(days==0 && startDate != '')
@@ -46,15 +62,14 @@ const ModernCalendar = (props) =>
             new Date(element.day).toLocaleDateString() <= period.toLocaleDateString()
         )
 
-        let filtered_schedule =[
-            {
-                date_id: 1,
-                date: `${new Date(current_day).toLocaleDateString()} até o dia ${period.toLocaleDateString()}`,
-                data: filtered_data,
-            }
-        ]
+        let data = 
+        {
+            current_day: current_day,
+            period: period,
+            filtered_data: filtered_data
+        }
 
-        setScheduleList(filtered_schedule);
+        return data
     }
 
     const addSubDays = Date.prototype.addDays = (days = 0) =>
@@ -64,12 +79,12 @@ const ModernCalendar = (props) =>
         return date
     }
 
-    let last_day = new Date('2022/01/01').toLocaleDateString()
+    let last_day = new Date('2021/01/01').toLocaleDateString()
     let current_day = new Date('2022/01/02').toLocaleDateString()
     let next_day = new Date('2022/01/03').toLocaleDateString()
     let week = new Date('2022/01/21')
 
-    console.log('dias oroginal :',last_day, current_day, next_day)
+    console.log(last_day, current_day, next_day)
 
     const getData = useCallback(async () =>
     {
@@ -81,9 +96,11 @@ const ModernCalendar = (props) =>
           }) 
           .then((json) => 
           {
-            const yesterday = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === last_day)
-            const current = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === current_day)
-            const tomorrow = json.filter((element, index) => new Date(element.day).toLocaleDateString('pt-BR') === next_day)
+            const yesterday = json.filter((element, index) => new Date(element.day).toLocaleDateString() === last_day)
+            const current = json.filter((element, index) => new Date(element.day).toLocaleDateString() === current_day)
+            const tomorrow = json.filter((element, index) => new Date(element.day).toLocaleDateString() === next_day)
+
+            console.log(yesterday, current, tomorrow)
 
             setSchedule(json)
 
@@ -158,150 +175,16 @@ const ModernCalendar = (props) =>
     },[doSchedule, getData])
 
 
-
-    const schedule_future = [
-       
-        {
-            id: '1',
-            name: 'Alexandre Henrique',
-            interviewer: 'TI | Diego Camargo',
-            day: '03/11/2021',
-            time: '08:00 - 09:00',
-            area: 'rh',
-            type: 'agendamentosolicitado',
-            avatar: 'https://observatoriodocinema.uol.com.br/wp-content/uploads/2018/08/cropped-exterminador-do-futuro-6-arnold-schwarzenegger-prepara-novo-ator-3.jpg'
-        },
-        {
-            id: '2',
-            name: 'José Maria',
-            interviewer: 'Administrativo | Elisângela',
-            day: '03/11/2021',
-            time: '09:30 - 10:30',
-            area: 'administrativo',
-            type: 'reagendamentosolicitado',
-            avatar: 'https://spinoff.com.br/wp-content/uploads/o-exterminador-do-futuro-1.jpg'
-        }, 
-        {
-            id: '3',
-            name: 'Andréia Marques',
-            interviewer: 'Comercial | Elisângela',
-            day: '03/11/2021',
-            time: '11:00 - 12:30',
-            area: 'comercial',
-            type: '',
-            avatar: 'https://sp-ao.shortpixel.ai/client/to_auto,q_glossy,ret_img,w_750,h_375/https://poltronanerd.com.br/wp-content/uploads/2020/05/jake-neyriti-james-cameron-avatar-2-capa-minhaseriefavorita-1280x720-1-750x375.jpg'
-        },
-        {
-            id: '4',
-            name: 'Marcelo Bombonato',
-            interviewer: 'Representante | Elisângela',
-            day: '03/11/2021',
-            time: '13:00 - 14:00',
-            area: 'representante',
-            type: '',
-            avatar: 'https://www.thewrap.com/wp-content/uploads/2016/05/Top-Gun-Tom-Cruise.png'
-        },
-        {
-            id: '5',
-            name: 'Zélia Cardoso',
-            interviewer: 'Produção | Elisângela',
-            day: '03/11/2021',
-            time: '15:30 - 16:30',
-            area: 'produção',
-            type: '',
-            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZOg5mRt2Y77bTrMb6iyUhBbXY5ErS_QOL5Q&usqp=CAU'
-        },
-        {
-            id: '6',
-            name: 'Luis Skagion',
-            interviewer: 'Comercial | Elisângela',
-            day: '03/11/2021',
-            time: '17:00 - 18:00',
-            area: 'comercial',
-            type: '',
-            avatar: 'https://tm.ibxk.com.br/2014/06/24/24104456847152.jpg?ims=1120x420'
-        },
-        {
-            id: '7',
-            name: 'José Maciel',
-            interviewer: 'TI | Diego Camargo',
-            day: '03/11/2021',
-            time: '08:00 - 09:00',
-            area: 'rh',
-            type: 'agendamentosolicitado',
-            avatar: 'https://smartgreen.net/wp-content/uploads/2021/01/person.jpg'
-        },
-        {
-            id: '8',
-            name: 'Kátia Maria',
-            interviewer: 'Administrativo | Elisângela',
-            day: '03/11/2021',
-            time: '09:30 - 10:30',
-            area: 'administrativo',
-            type: 'reagendamentosolicitado',
-            avatar: 'https://portal-assets.icnetworks.org/uploads/picture/file/104874/resized_045.DomingasPerson_Oc.Person_IC_FotoAndreSeiti3.jpg'
-        }, 
-        {
-            id: '9',
-            name: 'Marina Silva',
-            interviewer: 'Comercial | Elisângela',
-            day: '03/11/2021',
-            time: '11:00 - 12:30',
-            area: 'comercial',
-            type: '',
-            avatar: 'https://br.web.img3.acsta.net/pictures/15/09/01/18/54/060755.jpg'
-        },
-        {
-            id: '10',
-            name: 'Flávio Zanão',
-            interviewer: 'Representante | Elisângela',
-            day: '03/11/2021',
-            time: '13:00 - 14:00',
-            area: 'representante',
-            type: '',
-            avatar: 'https://m0.her.ie/wp-content/uploads/2018/01/07093633/GettyImages-887815620.jpg'
-        },
-        {
-            id: '11',
-            name: 'Oliver Bituso',
-            interviewer: 'Produção | Elisângela',
-            day: '03/11/2021',
-            time: '15:30 - 16:30',
-            area: 'produção',
-            type: '',
-            avatar: 'https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F61688aa1d4a8658c3f4d8640%2FAntonio-Juliano%2F0x0.jpg%3Ffit%3Dscale'
-        },
-        {
-            id: '12',
-            name: 'Maiara Azevedo',
-            interviewer: 'Comercial | Elisângela',
-            day: '03/11/2021',
-            time: '17:00 - 18:00',
-            area: 'comercial',
-            type: '',
-            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_ocW9x-t2gGJPKg3iqvoEfm7qJSB9ujqnqA&usqp=CAU'
-        }
-     
-    ]
-    
-
     const schedule_list = scheduleList.map((data, index) => 
     (                           
         <>
-            <div key={Math.random()} className={style.schedule_area_candidate_content_line_header}>
-                
+            <div key={Math.random()} className={style.schedule_area_candidate_content_line_header}>               
                 <div className={style.column_a}>
-
                     <Person style={{ marginLeft: '4px' }} />
-
                 </div>
-
                 <div className={style.column_x} style={{ width: '100%', padding: '8px 0 8px 0', fontSize: '16px', fontWeight: '500' }}>
-
                     Agenda do dia {data.date}
-
-                </div>
-                
+                </div>               
             </div>
 
             
@@ -445,7 +328,7 @@ const ModernCalendar = (props) =>
                             <span className={style.description}>entrevisas agendadas para essa semana</span>
                         </div>
                         <div className={style.calendar_future}>
-                            <Calendar data={schedule_future}/>
+                            <Calendar data={getInterviewPeriod(7)}/>
                         </div>
                         <div className={style.calendar_action}>ver todas as entrevistas</div>
                     </Paper>
@@ -457,7 +340,7 @@ const ModernCalendar = (props) =>
                             <span className={style.description}>entrevisas agendadas para esse mês</span>
                         </div>
                         <div className={style.calendar_future}>
-                            <Calendar data={schedule_future}/>
+                            <Calendar data={getInterviewPeriod(14)}/>
                         </div>
                         <div className={style.calendar_action}>ver todas as entrevistas</div>
                     </Paper>

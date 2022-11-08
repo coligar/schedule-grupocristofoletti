@@ -5,11 +5,10 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 
 const GroupAvatars = (props) =>
 {
-
     return (
 
     <AvatarGroup max={10}>
-        {props.data.map((item, index) => (
+        {props.data.filtered_data.map((item, index) => (
             <span key={index}>
                 <Avatar direction="row" alt={item.name} name={item.name} width="40" avatar={item.avatar}/>
             </span>
