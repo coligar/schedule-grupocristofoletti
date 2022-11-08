@@ -205,6 +205,26 @@
     color:#3B92E7;
 }
 
+.schedule_buttons
+{
+    padding: 6px; 
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: white;
+    font-weight: 500;
+    text-align: center;
+    justify-content: center;
+    margin:0 4px 0 0 !important;
+    border-radius: 4px !important;
+}
+.schedule_buttons :hover{
+    color: white;
+    background-color: #1592E6;
+    cursor: pointer !important;
+    border-radius: 4px;
+}
+
 
 
 
